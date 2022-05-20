@@ -9,13 +9,13 @@ exports.signup = async(req,res,next) =>{
     var passwordencrypted =await bcrypt.hash(Password,10);
     
     if(!(MailID && UserName && Password)){
-        res.status(400).send("All fields are required");
+        return res.status(400).send("All fields are required");
     }
 
     const olduser = await model.findOne({MailID});
 
     if(olduser){
-        res.status(409).send("User already Exists,Please Login");
+        return res.status(409).send("User already Exists,Please Login");
     }
 
     const user = await new model({
@@ -46,7 +46,7 @@ exports.login =async(req,res,next)=>{
     try {
         const {MailID,Password}= req.body;
         if(!(MailID && Password)){
-            res.status(400).send("All input fields are required.");
+            return res.status(400).send("All input fields are required.");
         }
         const user = await model.findOne({MailID});
 
@@ -70,5 +70,5 @@ exports.login =async(req,res,next)=>{
 }
 
 exports.welcome= async (req,res,next)=>{
-        res.status(200).send("Welcome to FreeCodeCamp 🙌");
+        return res.status(200).send("Welcome to FreeCodeCamp 🙌");
 }
